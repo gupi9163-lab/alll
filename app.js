@@ -34,6 +34,7 @@ if ('serviceWorker' in navigator) {
 // Navigation Functions
 function openCalculator(type) {
     document.getElementById('mainMenu').style.display = 'none';
+    document.querySelector('.info-btn').style.display = 'none';
     if (type === 'semester') {
         document.getElementById('semesterCalc').style.display = 'block';
     } else if (type === 'payment') {
@@ -48,6 +49,7 @@ function backToMenu() {
     document.getElementById('semesterCalc').style.display = 'none';
     document.getElementById('paymentCalc').style.display = 'none';
     document.getElementById('ageCalc').style.display = 'none';
+    document.querySelector('.info-btn').style.display = 'block';
     
     // Clear inputs
     document.getElementById('seminarCount').value = '';
@@ -70,8 +72,8 @@ function generateSeminarInputs() {
     const count = parseInt(document.getElementById('seminarCount').value);
     const container = document.getElementById('seminarInputs');
     
-    if (!count || count < 1) {
-        alert('Zəhmət olmasa düzgün say daxil edin!');
+    if (!count || count < 1 || count > 11) {
+        alert('Seminar sayı 1-11 arasında olmalıdır!');
         return;
     }
     
@@ -92,8 +94,8 @@ function generateKollokInputs() {
     const count = parseInt(document.getElementById('kollokCount').value);
     const container = document.getElementById('kollokInputs');
     
-    if (!count || count < 1) {
-        alert('Zəhmət olmasa düzgün say daxil edin!');
+    if (!count || count < 1 || count > 4) {
+        alert('Kollekvium sayı 1-4 arasında olmalıdır!');
         return;
     }
     
@@ -241,7 +243,7 @@ function calculateSemester() {
             📚 Sərbəst iş: <strong>${serbest.toFixed(2)}</strong><br>
             ✅ Davamiyyət (${hours} saat, ${absences} qayıb): <strong>${attendance}</strong><br><br>
             <div style="border-top: 2px solid rgba(255,255,255,0.3); padding-top: 15px; margin-top: 15px;">
-                <strong>📌 YEKİN BAL: ${finalScore.toFixed(2)} / 50</strong>
+                <strong>📌 YEKUN BAL: ${finalScore.toFixed(2)} / 50</strong>
             </div>
         </div>
     `;
