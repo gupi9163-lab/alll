@@ -256,12 +256,21 @@ function calculateSemester() {
     if (finalScore >= 50) {
         status = '🎉 MÜVƏFFƏQİYYƏTLƏ KEÇDİNİZ!';
         emoji = '✅';
-    } else if (finalScore >= 40) {
-        status = '⚠️ ORTA NƏTİCƏ';
+    } else if (finalScore >= 45) {
+        status = '🔥 ÇOX YAXŞI';
         emoji = '📊';
-    } else if (finalScore > 0) {
-        status = '⚠️ AŞAĞI NƏTİCƏ';
+    } else if (finalScore > 40) {
+        status = '💣 YAXŞI';
+        emoji = '📈';
+    } else if (finalScore > 35) {
+        status = '🫂 KAFİ';
         emoji = '📉';
+    } else if (finalScore > 25) {
+        status = '🎭 ZƏİF';
+        emoji = '📴';
+    } else if (finalScore < 25) {
+        status = '🗿 YAXŞI OLACAQ';
+        emoji = '🆒';
     } else {
         status = '⚠️ 0 BAL';
         emoji = '⚠️';
