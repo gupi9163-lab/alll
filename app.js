@@ -22,12 +22,47 @@ window.addEventListener('appinstalled', () => {
     document.getElementById('installBtn').style.display = 'none';
 });
 
-// Service Worker Registration
+// Service Worker Registration with auto-update
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js')
-            .then(reg => console.log('Service Worker registered'))
-            .catch(err => console.log('Service Worker registration failed'));
+            .then(reg => {
+                console.log('Service Worker registered');
+                
+                // Check for updates every 60 seconds
+                setInterval(() => {
+                    reg.update();
+                }, 60000);
+                
+                // Listen for updates
+                reg.addEventListener('updatefound', () => {
+                    const newWorker = reg.installing;
+                    console.log('New service worker found');
+                    
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('New version available, reloading...');
+                            // Send message to skip waiting
+                            newWorker.postMessage({ type: 'SKIP_WAITING' });
+                            // Reload page after a short delay
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 1000);
+                        }
+                    });
+                });
+            })
+            .catch(err => console.log('Service Worker registration failed', err));
+    });
+    
+    // Reload page when new service worker takes control
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!refreshing) {
+            refreshing = true;
+            console.log('Controller changed, reloading page');
+            window.location.reload();
+        }
     });
 }
 
@@ -224,9 +259,12 @@ function calculateSemester() {
     } else if (finalScore >= 40) {
         status = '⚠️ ORTA NƏTİCƏ';
         emoji = '📊';
+    } else if (finalScore > 0) {
+        status = '⚠️ AŞAĞI NƏTİCƏ';
+        emoji = '📉';
     } else {
-        status = '❌ KƏSR';
-        emoji = '❌';
+        status = '⚠️ 0 BAL';
+        emoji = '⚠️';
     }
     
     document.getElementById('semesterResult').innerHTML = `
