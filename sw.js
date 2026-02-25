@@ -1,4 +1,4 @@
-const CACHE_VERSION = '2.0.5';
+const CACHE_VERSION = '2.0.6';
 const CACHE_NAME = `hesablayici-v${CACHE_VERSION}`;
 const urlsToCache = [
   '/',
